@@ -1,0 +1,8 @@
+{namespace Footer.Macros.Code}
+/**
+ * @param node
+ * @param innerMarkup
+ */
+{template .convert}
+  {lb}footer{if $node.title}:title={$node.title}{/if}{rb}{$innerMarkup}{lb}footer{rb}
+{/template}

@@ -1,0 +1,56 @@
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
+        <param name="atlassian-data-center-compatible">true</param>
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <!-- add our web resources -->
+    <web-resource key="ro.nttdata.atlassian.jira" name="Footer Macro Init">
+        <context>jira.navigator.advanced</context>
+        <context>jira.navigator.simple</context>
+        <context>jira.view.issue</context>
+        <context>gh-rapid</context>
+
+        <dependency>${atlassian.plugin.key}:handler</dependency>
+
+        <resource type="download" name="js/footer.js" location="js/footer.js"/>
+        <resource type="download" name="js/footer-init.js" location="js/footer-init.js"/>
+    </web-resource>
+
+    <web-resource key="handler" name="Footer Plugin Context Init">
+        <context>jira.rich.editor</context>
+
+        <dependency>com.atlassian.jira.plugins.jira-editor-plugin:converter</dependency>
+
+        <resource name="soy/footer.soy.js" type="download" location="soy/footer.soy"/>
+
+        <transformation extension="soy">
+            <transformer key="soyTransformer"/>
+        </transformation>
+    </web-resource>
+
+    <web-resource key="content" name="JIRA Editor Reference Plugin Content Resources">
+        <context>jira.view.issue</context>
+        <context>jira.rich.editor.content</context>
+        <context>gh-rapid</context>
+
+        <transformation extension="less">
+            <transformer key="lessTransformer"/>
+        </transformation>
+
+        <resource type="download" name="less/footer-content.css" location="less/footer-content.less"/>
+
+    </web-resource>
+
+    <macro key='footer' name='{footer} formatting macro'
+           class='ro.nttdata.atlassian.jira.Footer'>
+        <description>Insert footer content with regards.</description>
+        <param name="convert-selector">div.footer-macro:not(.header-macro)</param>
+        <param name="convert-function">Footer.Macros.Code.convert</param>
+    </macro>
+
+</atlassian-plugin>
